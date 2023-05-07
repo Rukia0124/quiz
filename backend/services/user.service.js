@@ -7,7 +7,7 @@ const emailRegex = new RegExp(
 );
 
 class UserService {
-  async signup(userPassword, userEmail) {
+  async signup(userName, userPassword, userEmail) {
     try {
       if (!emailRegex.test(userEmail)) {
         throw new Error("Email invalide");
@@ -22,6 +22,7 @@ class UserService {
       const hash = await bcrypt.hash(userPassword, 10);
 
       const user = new User({
+        pseudo: userName,
         email: userEmail,
         password: hash,
       });
@@ -32,9 +33,9 @@ class UserService {
     }
   }
 
-  async login(userPassword, userEmail) {
+  async login(userPassword, userName) {
     try {
-      const user = await User.findOne({ email: userEmail });
+      const user = await User.findOne({ pseudo: userName });
       if (!user) {
         throw new Error("Paire identifiant/mot de passe incorrecte");
       }

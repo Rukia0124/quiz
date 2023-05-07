@@ -1,20 +1,60 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { API_ROUTES } from "../utils/constants";
+import { storeInLocalStorage } from "../lib/common";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [pseudo, setPseudo] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const response = await axios.post(API_ROUTES.SIGN_IN, {
+        pseudo,
+        password,
+      });
+      if (!response?.data?.token) {
+        console.log("Something went wrong during signing in: ", response);
+      } else {
+        storeInLocalStorage(response.data.token, response.data.userId);
+        navigate("/");
+      }
+      setIsLoading(false);
+    } catch (err) {
+      console.log("Some error occurred during signing in:", err);
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div>
-      <div id="login">
-        <div>
-          <form>
-            <label>Pseudo</label>
-            <input type="text" name="name" required autoComplete="off" />
-            <label>Email</label>
-            <input type="email" name="email" required autoComplete="off" />
-            <label>Mot de passe</label>
-            <textarea name="message" required />
-            <input type="submit" value="Envoyer" />
-          </form>
-        </div>
+    <div id="login">
+      <div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="pseudo">Pseudo</label>
+          <input
+            type="text"
+            id="pseudo"
+            name="pseudo"
+            required
+            autoComplete="off"
+            onChange={(e) => setPseudo(e.target.value)}
+          />
+          <label htmlFor="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            autoComplete="off"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input type="submit" value="Envoyer" disabled={isLoading} />
+        </form>
       </div>
     </div>
   );
