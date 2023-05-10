@@ -1,19 +1,38 @@
 import React from "react";
-import { Button } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { HomeOutlined } from "@ant-design/icons";
 
-const Navigation = () => {
+const Navigation = ({ user, setUser }) => {
+  const navigate = useNavigate();
+  const disconnect = () => {
+    localStorage.clear();
+    setUser(null);
+    navigate("/");
+  };
   return (
     <div id="navigation">
-      <NavLink to={"/login"}>
-        <Button>Connection</Button>
+      <NavLink to="/">
+        <HomeOutlined />
       </NavLink>
-      <NavLink to={"/signup"}>
-        <Button>Inscription</Button>
-      </NavLink>
-      <NavLink to={"/signup"}>
-        <Button>Profil</Button>
-      </NavLink>
+      {!user ? (
+        <>
+          <NavLink to="/signup">Créer un compte</NavLink>
+        </>
+      ) : (
+        <NavLink to="/profil">Profil</NavLink>
+      )}
+      {!user ? (
+        <NavLink to="/login">Se connecter</NavLink>
+      ) : (
+        <span
+          tabIndex={0}
+          role="button"
+          onKeyUp={disconnect}
+          onClick={disconnect}
+        >
+          Se déconnecter
+        </span>
+      )}
     </div>
   );
 };

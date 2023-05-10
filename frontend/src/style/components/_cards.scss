@@ -1,0 +1,27 @@
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 200px;
+  align-items: flex-end;
+}
+
+#card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px;
+  border: 2px solid $color2;
+  border-radius: 5px;
+  width: 33%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  height: 300px;
+  min-height: 300px;
+  flex: 1;
+}
+
+#card p {
+  font-weight: bold;
+  text-align: center;
+  color: $color2;
+  margin-top: auto;
+}

@@ -15,7 +15,7 @@ class UserService {
 
       const passwordStrength = zxcbn(userPassword);
 
-      if (passwordStrength.score < 1) {
+      if (passwordStrength.score < 2) {
         throw new Error("Mot de passe trop faible");
       }
 

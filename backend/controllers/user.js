@@ -7,7 +7,13 @@ exports.signup = (req, res, next) => {
   const userName = req.body.pseudo;
   const userPassword = req.body.password;
   const userEmail = req.body.email;
-  console.log(req.body);
+
+  if (!userName || !userPassword || !userEmail) {
+    return res
+      .status(400)
+      .json({ error: "Tous les champs doivent être remplis !" });
+  }
+
   userService
     .signup(userName, userPassword, userEmail)
     .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
@@ -17,6 +23,13 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   const userName = req.body.pseudo;
   const userPassword = req.body.password;
+
+  if (!userName || !userPassword) {
+    return res
+      .status(400)
+      .json({ error: "Tous les champs doivent être remplis !" });
+  }
+
   userService
     .login(userPassword, userName)
     .then((token) => {

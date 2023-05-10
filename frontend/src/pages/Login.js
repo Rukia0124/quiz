@@ -4,7 +4,7 @@ import { API_ROUTES } from "../utils/constants";
 import { storeInLocalStorage } from "../lib/common";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
@@ -22,6 +22,7 @@ const Login = () => {
         console.log("Something went wrong during signing in: ", response);
       } else {
         storeInLocalStorage(response.data.token, response.data.userId);
+        setUser(response.data);
         navigate("/");
       }
       setIsLoading(false);
