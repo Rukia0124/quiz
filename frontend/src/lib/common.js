@@ -1,3 +1,15 @@
+import axios from "axios";
+import { API_ROUTES } from "../utils/constants";
+
+function formatQuestions(questionsArray) {
+  return questionsArray.map((question) => {
+    const newQuestion = { ...question };
+    // eslint-disable-next-line no-underscore-dangle
+    newQuestion.id = newQuestion._id;
+    return newQuestion;
+  });
+}
+
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem("token", token);
   localStorage.setItem("userId", userId);
@@ -19,5 +31,39 @@ export async function getAuthenticatedUser() {
   } catch (err) {
     console.error("getAuthenticatedUser, Something Went Wrong", err);
     return defaultReturnObject;
+  }
+}
+export async function getQuestions() {
+  try {
+    const userId = getFromLocalStorage("userId");
+    const response = await axios({
+      method: "GET",
+      url: `${API_ROUTES.GETQUESTIONS}?userId=${userId}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const questions = formatQuestions(response.data);
+    return questions;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+export async function createQuiz(newQuiz, token) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${API_ROUTES.CREATE}`,
+      data: newQuiz,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Erreur lors de la création du quiz");
   }
 }
