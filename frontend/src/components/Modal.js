@@ -76,7 +76,7 @@ const CreationModal = ({ modalName, onClose }) => {
   return (
     <Modal
       title="Créer un quiz"
-      visible={isModalOpen}
+      open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
     >
