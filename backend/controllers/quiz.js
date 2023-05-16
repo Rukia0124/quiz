@@ -1,4 +1,4 @@
-const quizService = require("../services/createQuiz.service");
+const quizService = require("../services/quiz.service");
 
 exports.createQuiz = async (req, res) => {
   const { question, options, correctAnswer } = req.body;
@@ -39,11 +39,11 @@ exports.deleteQuiz = async (req, res) => {
   }
 };
 
-exports.getQuestions = async (req, res) => {
+exports.listQuestions = async (req, res) => {
   const userId = req.auth.userId;
 
   try {
-    const questions = await quizService.getQuestionsByUserId(userId);
+    const questions = await quizService.listQuestionsByUserId(userId);
     res.status(200).json(questions);
   } catch (error) {
     res.status(400).json({ error: error.message });

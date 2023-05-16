@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { API_ROUTES } from "../../utils/constants";
-import { NavLink } from "react-router-dom";
 import { createQuiz } from "../../lib/common";
 
 const CreateQcm = () => {
@@ -73,9 +70,6 @@ const CreateQcm = () => {
         <br />
         <button type="submit">Créer la question</button>
       </form>
-      <button>
-        <NavLink to="/questions">Voir mes question</NavLink>
-      </button>
     </div>
   );
 };

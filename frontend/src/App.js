@@ -10,7 +10,7 @@ import Lobby from "./pages/Lobby";
 import Join from "./pages/Join";
 import Create from "./pages/Create";
 import CreateQcm from "./components/quizs/Qcm";
-import Questions from "./pages/Questions";
+import Questions from "./components/Questions";
 
 function App() {
   const [user, setUser] = useState(null);

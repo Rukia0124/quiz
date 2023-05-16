@@ -4,7 +4,6 @@ import { API_ROUTES } from "../utils/constants";
 function formatQuestions(questionsArray) {
   return questionsArray.map((question) => {
     const newQuestion = { ...question };
-    // eslint-disable-next-line no-underscore-dangle
     newQuestion.id = newQuestion._id;
     return newQuestion;
   });
@@ -33,12 +32,11 @@ export async function getAuthenticatedUser() {
     return defaultReturnObject;
   }
 }
-export async function getQuestions() {
+export async function listQuestions() {
   try {
-    const userId = getFromLocalStorage("userId");
     const response = await axios({
       method: "GET",
-      url: `${API_ROUTES.GETQUESTIONS}?userId=${userId}`,
+      url: `${API_ROUTES.LISTQUESTIONS}`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

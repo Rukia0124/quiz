@@ -1,0 +1,22 @@
+#creationModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px;
+
+  h2 {
+    color: $color2;
+    margin: 10px;
+    font-size: 25px;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+
+    button {
+      margin: 0 10px;
+    }
+  }
+}

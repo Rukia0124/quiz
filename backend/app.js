@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const userRoutes = require("./routes/user");
-const createRoutes = require("./routes/createQuiz");
+const quizRoutes = require("./routes/quiz");
 const path = require("path");
 const connectDB = require("./middlewares/connectDB");
 const cors = require("./middlewares/cors");
@@ -15,6 +15,6 @@ app.get("/ping", function (req, res) {
 });
 app.use(express.json());
 app.use("/api/auth", userRoutes);
-app.use("/api/quiz", createRoutes);
+app.use("/api/quiz", quizRoutes);
 
 module.exports = app;

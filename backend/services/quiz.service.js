@@ -42,7 +42,7 @@ class QuizService {
     }
   }
 
-  async getQuestionsByUserId(userId) {
+  async listQuestionsByUserId(userId) {
     try {
       return await Quiz.find({ userId });
     } catch (error) {
