@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Input } from "antd";
 import CreateQcm from "./quizs/Qcm";
+import CreateOpenQuestion from "./quizs/Open";
 
 const CreationModal = ({ modalName, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -50,6 +51,9 @@ const CreationModal = ({ modalName, onClose }) => {
           </Form>
         </div>
       );
+      break;
+    case "open":
+      modalContent = <CreateOpenQuestion />;
       break;
     case "relations":
       modalContent = (

@@ -44,7 +44,7 @@ export async function listQuestions() {
     const questions = formatQuestions(response.data);
     return questions;
   } catch (err) {
-    console.error(err);
+    console.log("err");
     return [];
   }
 }
@@ -55,6 +55,22 @@ export async function createQuiz(newQuiz, token) {
       method: "post",
       url: `${API_ROUTES.CREATE}`,
       data: newQuiz,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Erreur lors de la création du quiz");
+  }
+}
+export async function createOpen(newOpen, token) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${API_ROUTES.CREATE}`,
+      data: newOpen,
       headers: {
         Authorization: `Bearer ${token}`,
       },

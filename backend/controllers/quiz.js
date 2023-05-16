@@ -1,14 +1,45 @@
 const quizService = require("../services/quiz.service");
 
-exports.createQuiz = async (req, res) => {
+exports.createQcm = async (req, res) => {
   const { question, options, correctAnswer } = req.body;
   const userId = req.auth.userId;
   try {
-    const createdQuiz = await quizService.createQuiz(
+    const createdQuiz = await quizService.createQcm(
       userId,
       question,
       options,
       correctAnswer
+    );
+    res.status(201).json(createdQuiz);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.createOpen = async (req, res) => {
+  const { question, correctAnswer } = req.body;
+  const userId = req.auth.userId;
+  try {
+    const createdQuiz = await quizService.createOpen(
+      userId,
+      question,
+      correctAnswer
+    );
+    res.status(201).json(createdQuiz);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.createOrderedImages = async (req, res) => {
+  const { question, images, correctOrder } = req.body;
+  const userId = req.auth.userId;
+  try {
+    const createdQuiz = await quizService.createOrderedImages(
+      userId,
+      question,
+      images,
+      correctOrder
     );
     res.status(201).json(createdQuiz);
   } catch (error) {
