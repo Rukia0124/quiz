@@ -13,7 +13,7 @@ const orderedImagesSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  correctOrder: {
+  correctAnswer: {
     type: [Number],
     required: true,
   },

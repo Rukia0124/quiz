@@ -32,14 +32,17 @@ exports.createOpen = async (req, res) => {
 };
 
 exports.createOrderedImages = async (req, res) => {
-  const { question, images, correctOrder } = req.body;
+  const { question, correctAnswer } = req.body;
+  const images = `${req.protocol}://${req.get("host")}/images/${
+    req.file.filename
+  }`;
   const userId = req.auth.userId;
   try {
     const createdQuiz = await quizService.createOrderedImages(
       userId,
       question,
       images,
-      correctOrder
+      correctAnswer
     );
     res.status(201).json(createdQuiz);
   } catch (error) {

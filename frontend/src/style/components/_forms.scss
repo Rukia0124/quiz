@@ -1,0 +1,52 @@
+#qcm,
+#open,
+#ordered-images {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  font-weight: bold;
+
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    label {
+      font-size: 15px;
+    }
+
+    input[type=text],
+    input[type=file],
+    input[type=number],
+    select {
+      width: 100%;
+      height: 25px;
+      border: 1px solid $color1;
+      border-radius: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    button {
+      background-color: $color3;
+      color: $color2;
+      border: none;
+      border-radius: 5px;
+      height: 30px;
+      width: 50%;
+      align-self: center;
+      margin-top: 20px;
+    }
+
+    #delete-img {
+      width: 30px;
+      color: $color1;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+
+}

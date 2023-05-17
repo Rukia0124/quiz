@@ -3,7 +3,7 @@ import { createOpen } from "../../lib/common";
 
 const CreateOpenQuestion = () => {
   const [question, setQuestion] = useState("");
-  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [correctAnswer, setcorrectAnswer] = useState("");
 
   const handleQuizCreation = async (e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const CreateOpenQuestion = () => {
     try {
       await createOpen(newOpenQuestion, localStorage.getItem("token"));
       setQuestion("");
-      setCorrectAnswer("");
+      setcorrectAnswer("");
       console.log("here");
     } catch (error) {
       console.error(error);
@@ -23,7 +23,7 @@ const CreateOpenQuestion = () => {
   };
 
   return (
-    <div>
+    <div id="open">
       <form onSubmit={handleQuizCreation}>
         <label>
           Question:
@@ -39,7 +39,7 @@ const CreateOpenQuestion = () => {
           <input
             type="text"
             value={correctAnswer}
-            onChange={(e) => setCorrectAnswer(e.target.value)}
+            onChange={(e) => setcorrectAnswer(e.target.value)}
           />
         </label>
         <br />

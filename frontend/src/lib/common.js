@@ -81,3 +81,19 @@ export async function createOpen(newOpen, token) {
     throw new Error("Erreur lors de la création du quiz");
   }
 }
+export async function createOrderedImages(newOrderedImages, token) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${API_ROUTES.CREATE}`,
+      data: newOrderedImages,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error creating ordered images");
+  }
+}

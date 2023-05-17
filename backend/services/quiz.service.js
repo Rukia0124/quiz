@@ -32,13 +32,13 @@ class QuizService {
     }
   }
 
-  async createOrderedImages(userId, question, images, correctOrder) {
+  async createOrderedImages(userId, question, images, correctAnswer) {
     try {
       const quiz = new OrderedImages({
         userId,
         question,
         images,
-        correctOrder,
+        correctAnswer,
       });
 
       return await quiz.save();

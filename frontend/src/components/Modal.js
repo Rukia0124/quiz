@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input } from "antd";
 import CreateQcm from "./quizs/Qcm";
 import CreateOpenQuestion from "./quizs/Open";
+import CreateOrderedImages from "./quizs/OrderedImages";
 
 const CreationModal = ({ modalName, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -38,19 +39,7 @@ const CreationModal = ({ modalName, onClose }) => {
       );
       break;
     case "ordonnees":
-      modalContent = (
-        <div>
-          <h3>Ordonnées</h3>
-          <Form>
-            <Form.Item label="Question">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Options">
-              <Input.TextArea />
-            </Form.Item>
-          </Form>
-        </div>
-      );
+      modalContent = <CreateOrderedImages />;
       break;
     case "open":
       modalContent = <CreateOpenQuestion />;
@@ -79,10 +68,10 @@ const CreationModal = ({ modalName, onClose }) => {
 
   return (
     <Modal
-      title="Créer un quiz"
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
+      footer={null}
     >
       {modalContent}
     </Modal>

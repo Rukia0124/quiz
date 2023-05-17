@@ -31,7 +31,7 @@ const CreateQcm = () => {
   };
 
   return (
-    <div>
+    <div id="qcm">
       <form onSubmit={handleQuizCreation}>
         <label>
           Question:
@@ -54,7 +54,7 @@ const CreateQcm = () => {
         ))}
         <br />
         <label>
-          Réponse correcte:
+          Réponse:
           <select
             value={correctAnswer}
             onChange={(e) => setCorrectAnswer(e.target.value)}
