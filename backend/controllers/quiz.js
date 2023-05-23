@@ -31,18 +31,19 @@ exports.createOpen = async (req, res) => {
   }
 };
 
-exports.createOrderedImages = async (req, res) => {
-  const { question, correctAnswer } = req.body;
-  const images = `${req.protocol}://${req.get("host")}/images/${
-    req.file.filename
-  }`;
+exports.createOrderedImages = async (req, res, next) => {
+  const questionData = req.body;
   const userId = req.auth.userId;
+  const imagesArray = [];
+  for (let i = 0; i < req.files.length; i++) {
+    console.log(req.files[i].path);
+    imagesArray.push(req.files[i].path);
+  }
+  questionData.images = imagesArray;
   try {
     const createdQuiz = await quizService.createOrderedImages(
       userId,
-      question,
-      images,
-      correctAnswer
+      questionData
     );
     res.status(201).json(createdQuiz);
   } catch (error) {

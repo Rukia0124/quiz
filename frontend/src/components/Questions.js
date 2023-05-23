@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { listQuestions } from "../lib/common";
 
 const Questions = () => {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState("");
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -25,7 +25,29 @@ const Questions = () => {
       <div className="questions">
         <ul>
           {questions
-            ? questions.map((question) => (
+            ? questions.qcmList.map((question) => (
+                <li
+                  className="selected"
+                  key={question.id}
+                  onClick={toggleSelection}
+                >
+                  {question.question}
+                </li>
+              ))
+            : ""}
+          {questions
+            ? questions.openList.map((question) => (
+                <li
+                  className="selected"
+                  key={question.id}
+                  onClick={toggleSelection}
+                >
+                  {question.question}
+                </li>
+              ))
+            : ""}
+          {questions
+            ? questions.orderedList.map((question) => (
                 <li
                   className="selected"
                   key={question.id}

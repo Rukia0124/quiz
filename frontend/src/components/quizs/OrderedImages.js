@@ -1,48 +1,52 @@
 import React, { useState } from "react";
 import { createOrderedImages } from "../../lib/common";
-import { CloseOutlined } from "@ant-design/icons";
 
-const CreateOrderedImages = () => {
+const OrderedImages = () => {
   const [question, setQuestion] = useState("");
+  const [correctAnswer, setCorrectAnswer] = useState([]);
   const [images, setImages] = useState([]);
-  const [imageOrder, setImageOrder] = useState([]);
+
+  const handleQuestionChange = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  const handleCorrectAnswerChange = (e) => {
+    const answerString = e.target.value;
+    const answerArray = answerString
+      .split(",")
+      .map((num) => parseInt(num.trim(), 10))
+      .filter((num) => !isNaN(num));
+
+    setCorrectAnswer(answerArray);
+  };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const image = reader.result;
-      setImages((prevImages) => [...prevImages, image]);
-      setImageOrder((prevOrder) => [...prevOrder, 0]);
-    };
-    reader.readAsDataURL(file);
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setImages((prevImages) => [...prevImages, selectedImage]);
+    }
   };
 
-  const handleOrderChange = (index, value) => {
-    const updatedOrder = [...imageOrder];
-    updatedOrder[index] = parseInt(value);
-    setImageOrder(updatedOrder);
-  };
-
-  const handleImageRemove = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    setImageOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
-  };
-
-  const handleQuizCreation = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newQuiz = {
-      question,
-      images,
-      correctAnswer: JSON.stringify(imageOrder),
-    };
+
+    if (images.length !== 4) {
+      console.error("Veuillez ajouter 4 images.");
+      return;
+    }
 
     try {
-      console.log(newQuiz);
-      await createOrderedImages(newQuiz, localStorage.getItem("token"));
+      const formData = new FormData();
+      formData.append("question", question);
+      formData.append("correctAnswer", correctAnswer);
+      images.forEach((image, index) => {
+        formData.append(`images`, image);
+      });
+
+      await createOrderedImages(formData, localStorage.getItem("token"));
       setQuestion("");
+      setCorrectAnswer("");
       setImages([]);
-      setImageOrder([]);
     } catch (error) {
       console.error(error);
     }
@@ -50,53 +54,47 @@ const CreateOrderedImages = () => {
 
   return (
     <div id="ordered-images">
-      <form onSubmit={handleQuizCreation}>
-        <label>
-          Question:
-          <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-        </label>
-        <br />
-        <div>
-          <label>
-            Ajouter une image :
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-          </label>
-          <br />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="question">Question</label>
+        <input
+          id="question"
+          name="question"
+          value={question}
+          onChange={handleQuestionChange}
+          placeholder="Classez ces acteurs du plus petit au plus grand"
+        />
+        <div className="images">
           {images.map((image, index) => (
             <div key={index}>
               <img
-                src={image}
+                src={URL.createObjectURL(image)}
                 alt={`Image ${index + 1}`}
-                style={{ maxWidth: "50px" }}
               />
-              <button
-                type="button"
-                id="delete-img"
-                onClick={() => handleImageRemove(index)}
-              >
-                <CloseOutlined />
-              </button>
-              <br />
-              <label>
-                Ordre de l'image {index + 1}:
-                <input
-                  type="number"
-                  value={imageOrder[index] || ""}
-                  onChange={(e) => handleOrderChange(index, e.target.value)}
-                />
-              </label>
-              <br />
             </div>
           ))}
         </div>
+
+        <input
+          name="images"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          required
+        />
+
+        <label htmlFor="correctAnswer">Réponse</label>
+        <input
+          id="correctAnswer"
+          name="correctAnswer"
+          value={correctAnswer}
+          onChange={handleCorrectAnswerChange}
+          placeholder="4,2,1,3"
+        />
+
         <button type="submit">Créer la question</button>
       </form>
     </div>
   );
 };
 
-export default CreateOrderedImages;
+export default OrderedImages;

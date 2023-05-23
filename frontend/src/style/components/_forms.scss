@@ -30,6 +30,16 @@
       margin-bottom: 5px;
     }
 
+    .images {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+
+      img {
+        width: 90px;
+      }
+    }
+
     button {
       background-color: $color3;
       color: $color2;

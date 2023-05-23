@@ -7,13 +7,7 @@ const imgCompression = require("../middlewares/imgCompression");
 
 router.get("/", auth, quizController.listQuestions);
 
-router.post("/", auth, quizController.createQcm);
-router.post("/", auth, quizController.createOpen);
-router.post(
-  "/",
-  auth,
-  multer,
-  imgCompression,
-  quizController.createOrderedImages
-);
+router.post("/qcm", auth, quizController.createQcm);
+router.post("/open", auth, quizController.createOpen);
+router.post("/orderedImages", auth, multer, quizController.createOrderedImages);
 module.exports = router;

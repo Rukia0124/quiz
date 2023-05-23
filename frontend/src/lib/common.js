@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_ROUTES } from "../utils/constants";
 
 function formatQuestions(questionsArray) {
+  console.log("test", questionsArray);
   return questionsArray.map((question) => {
     const newQuestion = { ...question };
     newQuestion.id = newQuestion._id;
@@ -41,7 +42,9 @@ export async function listQuestions() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    const questions = formatQuestions(response.data);
+    console.log(response);
+    const questions = response.data;
+
     return questions;
   } catch (err) {
     console.log("err");
@@ -53,7 +56,7 @@ export async function createQuiz(newQuiz, token) {
   try {
     const response = await axios({
       method: "post",
-      url: `${API_ROUTES.CREATE}`,
+      url: `${API_ROUTES.CREATE}/qcm`,
       data: newQuiz,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -69,7 +72,7 @@ export async function createOpen(newOpen, token) {
   try {
     const response = await axios({
       method: "post",
-      url: `${API_ROUTES.CREATE}`,
+      url: `${API_ROUTES.CREATE}/open`,
       data: newOpen,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -85,10 +88,11 @@ export async function createOrderedImages(newOrderedImages, token) {
   try {
     const response = await axios({
       method: "post",
-      url: `${API_ROUTES.CREATE}`,
+      url: `${API_ROUTES.CREATE}/orderedImages`,
       data: newOrderedImages,
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

@@ -1,5 +1,6 @@
 const Qcm = require("../models/qcm");
 const Open = require("../models/open");
+const OrderedImages = require("../models/order");
 
 class QuizService {
   async createQcm(userId, question, options, correctAnswer) {
@@ -13,7 +14,6 @@ class QuizService {
 
       return await quiz.save();
     } catch (error) {
-      console.log(userId);
       throw new Error(error);
     }
   }
@@ -27,23 +27,21 @@ class QuizService {
 
       return await quiz.save();
     } catch (error) {
-      console.log(userId);
       throw new Error(error);
     }
   }
 
-  async createOrderedImages(userId, question, images, correctAnswer) {
+  async createOrderedImages(userId, questionData) {
     try {
       const quiz = new OrderedImages({
         userId,
-        question,
-        images,
-        correctAnswer,
+        question: questionData.question,
+        images: questionData.images,
+        correctAnswer: questionData.correctAnswer,
       });
 
       return await quiz.save();
     } catch (error) {
-      console.log(userId);
       throw new Error(error);
     }
   }
@@ -73,12 +71,41 @@ class QuizService {
     }
   }
 
-  async listQuestionsByUserId(userId) {
+  async listQcmByUserId(userId) {
     try {
       return await Qcm.find({ userId });
     } catch (error) {
       throw new Error(error);
     }
   }
+
+  async listOpenByUserId(userId) {
+    try {
+      return await Open.find({ userId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async listOrderedByUserId(userId) {
+    try {
+      return await OrderedImages.find({ userId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async listQuestionsByUserId(userId) {
+    try {
+      const qcmList = await this.listQcmByUserId(userId);
+      const openList = await this.listOpenByUserId(userId);
+      const orderedList = await this.listOrderedByUserId(userId);
+
+      return { qcmList, openList, orderedList };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
+
 module.exports = new QuizService();
