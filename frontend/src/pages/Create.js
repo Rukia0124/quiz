@@ -24,6 +24,7 @@ const Create = () => {
         <Button onClick={() => openModal("open")}>Question ouverte</Button>
         <Button onClick={() => openModal("blindtest")}>Blindtest</Button>
         <Button onClick={() => openModal("ordonnees")}>Ordonnées</Button>
+        <Button onClick={() => openModal("ordonnees v2")}>Ordonnées v2</Button>
         <Button onClick={() => openModal("relations")}>Relations</Button>
       </div>
       {selectedModal && (

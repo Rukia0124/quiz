@@ -10,7 +10,6 @@ import { useUser } from "./lib/customHooks";
 import Lobby from "./pages/Lobby";
 import Join from "./pages/Join";
 import Create from "./pages/Create";
-import CreateQcm from "./components/quizs/Qcm";
 import Questions from "./components/Questions";
 
 function App() {
@@ -33,7 +32,6 @@ function App() {
           <Route path="/newgame" element={<Lobby />}></Route>
           <Route path="/join" element={<Join />}></Route>
           <Route path="/create-quiz" element={<Create />}></Route>
-          <Route path="/qcm" element={<CreateQcm />}></Route>
           <Route path="/questions" element={<Questions />}></Route>
         </Routes>
       </div>

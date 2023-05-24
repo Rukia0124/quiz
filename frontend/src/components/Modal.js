@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input } from "antd";
 import CreateQcm from "./quizs/Qcm";
 import CreateOpenQuestion from "./quizs/Open";
+import Ordered from "./quizs/Ordered";
 import CreateOrderedImages from "./quizs/OrderedImages";
 
 const CreationModal = ({ modalName, onClose }) => {
@@ -40,6 +41,9 @@ const CreationModal = ({ modalName, onClose }) => {
       break;
     case "ordonnees":
       modalContent = <CreateOrderedImages />;
+      break;
+    case "ordonnees v2":
+      modalContent = <Ordered />;
       break;
     case "open":
       modalContent = <CreateOpenQuestion />;

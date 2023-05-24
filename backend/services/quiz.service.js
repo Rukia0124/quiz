@@ -1,6 +1,7 @@
 const Qcm = require("../models/qcm");
 const Open = require("../models/open");
 const OrderedImages = require("../models/order");
+const Ordered = require("../models/ordered");
 
 class QuizService {
   async createQcm(userId, question, options, correctAnswer) {
@@ -38,6 +39,19 @@ class QuizService {
         question: questionData.question,
         images: questionData.images,
         correctAnswer: questionData.correctAnswer,
+      });
+
+      return await quiz.save();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async createOrdered(userId, question, images) {
+    try {
+      const quiz = new Ordered({
+        userId,
+        question,
+        images,
       });
 
       return await quiz.save();
@@ -94,14 +108,22 @@ class QuizService {
       throw new Error(error);
     }
   }
+  async listOrderedV2ByUserId(userId) {
+    try {
+      return await Ordered.find({ userId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   async listQuestionsByUserId(userId) {
     try {
       const qcmList = await this.listQcmByUserId(userId);
       const openList = await this.listOpenByUserId(userId);
       const orderedList = await this.listOrderedByUserId(userId);
+      const orderedV2List = await this.listOrderedV2ByUserId(userId);
 
-      return { qcmList, openList, orderedList };
+      return { qcmList, openList, orderedList, orderedV2List };
     } catch (error) {
       throw new Error(error);
     }

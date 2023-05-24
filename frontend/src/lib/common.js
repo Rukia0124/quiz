@@ -1,15 +1,6 @@
 import axios from "axios";
 import { API_ROUTES } from "../utils/constants";
 
-function formatQuestions(questionsArray) {
-  console.log("test", questionsArray);
-  return questionsArray.map((question) => {
-    const newQuestion = { ...question };
-    newQuestion.id = newQuestion._id;
-    return newQuestion;
-  });
-}
-
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem("token", token);
   localStorage.setItem("userId", userId);
@@ -42,7 +33,6 @@ export async function listQuestions() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(response);
     const questions = response.data;
 
     return questions;
@@ -93,6 +83,22 @@ export async function createOrderedImages(newOrderedImages, token) {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error creating ordered images");
+  }
+}
+export async function createOrdered(newOrdered, token) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${API_ROUTES.CREATE}/ordered`,
+      data: newOrdered,
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;

@@ -16,7 +16,6 @@ const CreateOpenQuestion = () => {
       await createOpen(newOpenQuestion, localStorage.getItem("token"));
       setQuestion("");
       setcorrectAnswer("");
-      console.log("here");
     } catch (error) {
       console.error(error);
     }

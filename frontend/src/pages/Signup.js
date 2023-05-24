@@ -12,13 +12,11 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(process.env);
       const response = await axios.post(API_ROUTES.SIGN_UP, {
         pseudo,
         email,
         password,
       });
-      console.log(response.data);
     } catch (err) {
       console.log(err.response.data);
     }

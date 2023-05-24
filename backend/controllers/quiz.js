@@ -36,7 +36,6 @@ exports.createOrderedImages = async (req, res, next) => {
   const userId = req.auth.userId;
   const imagesArray = [];
   for (let i = 0; i < req.files.length; i++) {
-    console.log(req.files[i].path);
     imagesArray.push(req.files[i].path);
   }
   questionData.images = imagesArray;
@@ -44,6 +43,20 @@ exports.createOrderedImages = async (req, res, next) => {
     const createdQuiz = await quizService.createOrderedImages(
       userId,
       questionData
+    );
+    res.status(201).json(createdQuiz);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+exports.createOrdered = async (req, res) => {
+  const { question, images } = req.body;
+  const userId = req.auth.userId;
+  try {
+    const createdQuiz = await quizService.createOrdered(
+      userId,
+      question,
+      images
     );
     res.status(201).json(createdQuiz);
   } catch (error) {

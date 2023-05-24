@@ -10,4 +10,5 @@ router.get("/", auth, quizController.listQuestions);
 router.post("/qcm", auth, quizController.createQcm);
 router.post("/open", auth, quizController.createOpen);
 router.post("/orderedImages", auth, multer, quizController.createOrderedImages);
+router.post("/ordered", auth, quizController.createOrdered);
 module.exports = router;
