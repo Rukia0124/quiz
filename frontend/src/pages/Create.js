@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "antd";
 import Questions from "../components/Questions";
 import CreationModal from "../components/Modal";
+import NewQuiz from "../components/NewQuiz";
 
 const Create = () => {
   const [selectedModal, setSelectedModal] = useState(null);
@@ -22,10 +23,10 @@ const Create = () => {
       <div className="btn-container">
         <Button onClick={() => openModal("qcm")}>QCM</Button>
         <Button onClick={() => openModal("open")}>Question ouverte</Button>
-        <Button onClick={() => openModal("blindtest")}>Blindtest</Button>
-        <Button onClick={() => openModal("ordonnees")}>Ordonnées</Button>
-        <Button onClick={() => openModal("ordonnees v2")}>Ordonnées v2</Button>
-        <Button onClick={() => openModal("relations")}>Relations</Button>
+        {/* <Button onClick={() => openModal("blindtest")}>Blindtest</Button> */}
+        {/* <Button onClick={() => openModal("ordonnees")}>Ordonnées</Button> */}
+        <Button onClick={() => openModal("ordonnees v2")}>Ordonnées</Button>
+        {/* <Button onClick={() => openModal("relations")}>Relations</Button> */}
       </div>
       {selectedModal && (
         <CreationModal modalName={selectedModal} onClose={closeModal} />

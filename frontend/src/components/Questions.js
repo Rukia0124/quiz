@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { listQuestions } from "../lib/common";
+import NewQuiz from "./NewQuiz";
 
 const Questions = () => {
   const [questions, setQuestions] = useState({});
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     async function fetchQuestions() {
       const data = await listQuestions();
       if (data) {
         setQuestions(data);
-        console.log(data);
       }
     }
 
@@ -17,7 +18,13 @@ const Questions = () => {
   }, []);
 
   const toggleSelection = (event) => {
+    const id = event.target.getAttribute("data-question-id");
     event.target.classList.toggle("selected");
+    if (selected.includes(id)) {
+      setSelected(selected.filter((questionId) => questionId !== id));
+    } else {
+      setSelected((selected) => [...selected, id]);
+    }
   };
 
   return (
@@ -28,9 +35,10 @@ const Questions = () => {
           {questions.qcmList &&
             questions.qcmList.map((question) => (
               <li
-                className="selected"
-                key={question.id}
+                className="qcmlist"
+                key={question._id}
                 onClick={toggleSelection}
+                data-question-id={question._id}
               >
                 {question.question}
               </li>
@@ -38,9 +46,10 @@ const Questions = () => {
           {questions.openList &&
             questions.openList.map((question) => (
               <li
-                className="selected"
-                key={question.id}
+                className="plop"
+                key={question._id}
                 onClick={toggleSelection}
+                data-question-id={question._id}
               >
                 {question.question}
               </li>
@@ -48,9 +57,10 @@ const Questions = () => {
           {questions.orderedList &&
             questions.orderedList.map((question) => (
               <li
-                className="selected"
-                key={question.id}
+                className=""
+                key={question._id}
                 onClick={toggleSelection}
+                data-question-id={question._id}
               >
                 {question.question}
               </li>
@@ -58,15 +68,17 @@ const Questions = () => {
           {questions.orderedV2List &&
             questions.orderedV2List.map((question) => (
               <li
-                className="selected"
-                key={question.id}
+                className=""
+                key={question._id}
                 onClick={toggleSelection}
+                data-question-id={question._id}
               >
                 {question.question}
               </li>
             ))}
         </ul>
       </div>
+      <NewQuiz questions={selected} />
     </div>
   );
 };
