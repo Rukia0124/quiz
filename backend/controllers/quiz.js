@@ -97,3 +97,13 @@ exports.listQuestions = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+exports.listQuestionsById = async (req, res) => {
+  const questionId = req.params.id;
+
+  try {
+    const questions = await quizService.listQuestionsById(questionId);
+    res.status(200).json(questions);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

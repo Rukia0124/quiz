@@ -19,12 +19,21 @@ const Questions = () => {
 
   const toggleSelection = (event) => {
     const id = event.target.getAttribute("data-question-id");
-    event.target.classList.toggle("selected");
-    if (selected.includes(id)) {
-      setSelected(selected.filter((questionId) => questionId !== id));
+    const question = event.target.getAttribute("data-question-question");
+    const type = event.target.getAttribute("data-question-type");
+    if (event.target.classList.contains("selected")) {
+      setSelected(selected.filter((question) => question.id !== id));
     } else {
-      setSelected((selected) => [...selected, id]);
+      setSelected((selected) => [
+        ...selected,
+        {
+          question,
+          id,
+          type,
+        },
+      ]);
     }
+    event.target.classList.toggle("selected");
   };
 
   return (
@@ -39,6 +48,8 @@ const Questions = () => {
                 key={question._id}
                 onClick={toggleSelection}
                 data-question-id={question._id}
+                data-question-type="qcm"
+                data-question-question={question.question}
               >
                 {question.question}
               </li>
@@ -46,10 +57,11 @@ const Questions = () => {
           {questions.openList &&
             questions.openList.map((question) => (
               <li
-                className="plop"
                 key={question._id}
                 onClick={toggleSelection}
                 data-question-id={question._id}
+                data-question-type="open"
+                data-question-question={question.question}
               >
                 {question.question}
               </li>
@@ -61,6 +73,8 @@ const Questions = () => {
                 key={question._id}
                 onClick={toggleSelection}
                 data-question-id={question._id}
+                data-question-type="ordered"
+                data-question-question={question.question}
               >
                 {question.question}
               </li>
@@ -72,13 +86,15 @@ const Questions = () => {
                 key={question._id}
                 onClick={toggleSelection}
                 data-question-id={question._id}
+                data-question-type="ordered"
+                data-question-question={question.question}
               >
                 {question.question}
               </li>
             ))}
         </ul>
       </div>
-      <NewQuiz questions={selected} />
+      <NewQuiz questions={selected} setSelected={setSelected} />
     </div>
   );
 };

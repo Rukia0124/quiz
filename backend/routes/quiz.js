@@ -6,6 +6,7 @@ const multer = require("../middlewares/multer-config");
 const imgCompression = require("../middlewares/imgCompression");
 
 router.get("/", auth, quizController.listQuestions);
+router.get("/list", auth, quizController.listQuestionsById);
 
 router.post("/qcm", auth, quizController.createQcm);
 router.post("/open", auth, quizController.createOpen);

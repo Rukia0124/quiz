@@ -128,6 +128,50 @@ class QuizService {
       throw new Error(error);
     }
   }
+
+  async listQcmById(questionId) {
+    try {
+      return await Qcm.find({ questionId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async listOpenById(questionId) {
+    try {
+      return await Open.find({ questionId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async listOrderedById(questionId) {
+    try {
+      return await OrderedImages.find({ questionId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async listOrderedV2ById(questionId) {
+    try {
+      return await Ordered.find({ questionId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getQuestionsById(questionId) {
+    try {
+      const qcmList = await this.listQcmById(questionId);
+      const openList = await this.listOpenById(questionId);
+      const orderedList = await this.listOrderedById(questionId);
+      const orderedV2List = await this.listOrderedV2ById(questionId);
+
+      return { qcmList, openList, orderedList, orderedV2List };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 module.exports = new QuizService();

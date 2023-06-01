@@ -12,6 +12,7 @@
     "socket.io": "^4.6.1",
     "swagger-autogen": "^2.23.1",
     "swagger-ui-express": "^4.6.3",
+    "uuid": "^9.0.0",
     "zxcvbn": "^4.4.2"
   }
 }

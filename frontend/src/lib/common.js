@@ -107,3 +107,17 @@ export async function createOrdered(newOrdered, token) {
     throw new Error("Error creating ordered images");
   }
 }
+export async function getQuestion(id) {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${API_ROUTES.QUESTIONS}`,
+    });
+    const question = response.data;
+    question.id = question._id;
+    return question;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}

@@ -9,7 +9,7 @@ const Cards = () => {
           <p>Créer un quiz</p>
         </div>
       </NavLink>
-      <NavLink to="/newgame">
+      <NavLink to="/rooms/:id">
         <div id="card">
           <p>Créer une partie</p>
         </div>

@@ -19,7 +19,7 @@ const Create = () => {
 
   return (
     <div id="creationModal">
-      <h2>Créer un quiz</h2>
+      <h2>Ajouter une question</h2>
       <div className="btn-container">
         <Button onClick={() => openModal("qcm")}>QCM</Button>
         <Button onClick={() => openModal("open")}>Question ouverte</Button>
