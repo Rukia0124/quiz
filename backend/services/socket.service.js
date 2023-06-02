@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 
 let roomCreators = {};
 let roomByUser = {};
+let players = {};
 
 class SocketService {
   initialize(server) {
@@ -24,13 +25,42 @@ class SocketService {
         if (roomByUser[userId]) {
           let previousRoomFromUser = roomByUser[userId];
           delete roomCreators[previousRoomFromUser];
+          delete players[previousRoomFromUser];
         }
 
         io.emit("roomCreated", roomId);
         roomCreators[roomId] = socket.id;
+        players[roomId] = [];
         roomByUser[userId] = roomId;
 
         console.log("room " + roomId + " créée par : " + roomCreators[roomId]);
+      });
+
+      socket.on("joinRoom", (params) => {
+        let roomId = params.roomId;
+        let token = params.token;
+        if (!roomCreators[roomId]) {
+          console.log("room " + roomId + " does not exist");
+          return;
+        }
+
+        let userId;
+        let isLogged = false;
+        if (token) {
+          const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+          userId = decodedToken.userId;
+          isLogged = true;
+          console.log(token);
+        }
+
+        if (isLogged && roomByUser[userId] === roomId) {
+          socket.join(roomId);
+          console.log("creator " + socket.id + " joined room " + roomId);
+        } else {
+          players[roomId].push(socket.id);
+          socket.join(roomId);
+          console.log("player " + socket.id + " joined room " + roomId);
+        }
       });
 
       socket.on("checkIsRoomCreator", ({ roomId, socketId }) => {
@@ -40,5 +70,4 @@ class SocketService {
     });
   }
 }
-
 module.exports = new SocketService();

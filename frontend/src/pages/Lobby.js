@@ -3,19 +3,20 @@ import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { getFromCookie } from "../lib/common";
 const socket = io(process.env.REACT_APP_API_URL);
-
 const Lobby = () => {
   const { id } = useParams();
   const [isRoomCreator, setIsRoomCreator] = useState(false);
 
   useEffect(() => {
+    const token = getFromCookie("token");
     const socketId = getFromCookie("socketId");
+
     socket.emit("checkIsRoomCreator", { roomId: id, socketId: socketId });
+    socket.emit("joinRoom", { roomId: id, token: token });
 
     socket.on("checkIsRoomCreatorResponse", (isCreator) => {
       setIsRoomCreator(isCreator);
     });
-
     return () => {
       socket.off("checkIsRoomCreatorResponse");
     };
