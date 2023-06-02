@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { API_ROUTES } from "../utils/constants";
-import { storeInLocalStorage } from "../lib/common";
+import { storeInCookies } from "../lib/common";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setUser }) => {
@@ -21,7 +21,7 @@ const Login = ({ setUser }) => {
       if (!response?.data?.token) {
         console.log("Something went wrong during signing in: ", response);
       } else {
-        storeInLocalStorage(response.data.token, response.data.userId);
+        storeInCookies(response.data.token, response.data.userId);
         setUser(response.data);
         navigate("/");
       }

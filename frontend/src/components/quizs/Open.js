@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createOpen } from "../../lib/common";
+import { createOpen, getFromCookie } from "../../lib/common";
 
 const CreateOpenQuestion = () => {
   const [question, setQuestion] = useState("");
@@ -13,7 +13,7 @@ const CreateOpenQuestion = () => {
     };
 
     try {
-      await createOpen(newOpenQuestion, localStorage.getItem("token"));
+      await createOpen(newOpenQuestion, getFromCookie("token"));
       setQuestion("");
       setcorrectAnswer("");
     } catch (error) {

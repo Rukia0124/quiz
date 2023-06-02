@@ -1,20 +1,36 @@
 import axios from "axios";
 import { API_ROUTES } from "../utils/constants";
 
-export function storeInLocalStorage(token, userId) {
-  localStorage.setItem("token", token);
-  localStorage.setItem("userId", userId);
+export function storeInCookies(token, userId) {
+  var d = new Date();
+  d.setTime(d.getTime() + 12 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+
+  document.cookie = "token=" + token + ";" + expires + ";path=/";
+  document.cookie = "userId=" + userId + ";" + expires + ";path=/";
 }
 
-export function getFromLocalStorage(item) {
-  return localStorage.getItem(item);
+export function getFromCookie(item) {
+  let name = item + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
 
 export async function getAuthenticatedUser() {
   const defaultReturnObject = { authenticated: false, user: null };
   try {
-    const token = getFromLocalStorage("token");
-    const userId = getFromLocalStorage("userId");
+    const token = getFromCookie("token");
+    const userId = getFromCookie("userId");
     if (!token) {
       return defaultReturnObject;
     }
@@ -30,7 +46,7 @@ export async function listQuestions() {
       method: "GET",
       url: `${API_ROUTES.LISTQUESTIONS}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${getFromCookie("token")}`,
       },
     });
     const questions = response.data;

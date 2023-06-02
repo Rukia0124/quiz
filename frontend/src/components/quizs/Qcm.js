@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createQuiz } from "../../lib/common";
+import { createQuiz, getFromCookie } from "../../lib/common";
 
 const CreateQcm = () => {
   const [question, setQuestion] = useState("");
@@ -21,7 +21,7 @@ const CreateQcm = () => {
     };
 
     try {
-      await createQuiz(newQuiz, localStorage.getItem("token"));
+      await createQuiz(newQuiz, getFromCookie("token"));
       setQuestion("");
       setOptions(["", "", "", ""]);
       setCorrectAnswer("");

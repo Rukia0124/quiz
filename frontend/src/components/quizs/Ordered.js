@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createOrdered } from "../../lib/common";
+import { createOrdered, getFromCookie } from "../../lib/common";
 
 const Ordered = () => {
   const [question, setQuestion] = useState("");
@@ -44,7 +44,7 @@ const Ordered = () => {
     };
 
     try {
-      await createOrdered(newOrdered, localStorage.getItem("token"));
+      await createOrdered(newOrdered, getFromCookie("token"));
       setQuestion("");
       setAnswers([
         { number: 1, url: "", preview: "" },

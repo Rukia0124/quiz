@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createOrderedImages } from "../../lib/common";
+import { createOrderedImages, getFromCookie } from "../../lib/common";
 
 const OrderedImages = () => {
   const [question, setQuestion] = useState("");
@@ -43,7 +43,7 @@ const OrderedImages = () => {
         formData.append(`images`, image);
       });
 
-      await createOrderedImages(formData, localStorage.getItem("token"));
+      await createOrderedImages(formData, getFromCookie("token"));
       setQuestion("");
       setCorrectAnswer("");
       setImages([]);

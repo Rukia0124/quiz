@@ -1,10 +1,10 @@
+const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
-class SocketService {
-  constructor() {
-    this.rooms = {}; // Objet pour stocker l'association entre l'ID de la room et l'ID du créateur
-  }
+let roomCreators = {};
+let roomByUser = {};
 
+class SocketService {
   initialize(server) {
     const io = require("socket.io")(server, {
       cors: {
@@ -16,24 +16,26 @@ class SocketService {
     io.on("connection", (socket) => {
       console.log("utilisateur connecté : " + socket.id);
 
-      socket.on("createRoom", () => {
+      socket.on("createRoom", (token) => {
         const roomId = uuidv4();
-        const creatorId = socket.id;
+        const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+        const userId = decodedToken.userId;
 
-        this.rooms[roomId] = creatorId; // Stocker l'association entre l'ID de la room et l'ID du créateur
+        if (roomByUser[userId]) {
+          let previousRoomFromUser = roomByUser[userId];
+          delete roomCreators[previousRoomFromUser];
+        }
 
         io.emit("roomCreated", roomId);
-        console.log(roomId);
+        roomCreators[roomId] = socket.id;
+        roomByUser[userId] = roomId;
+
+        console.log("room " + roomId + " créée par : " + roomCreators[roomId]);
       });
 
-      socket.on("checkCreator", (roomId) => {
-        const creatorId = this.rooms[roomId]; // Récupérer l'ID du créateur associé à la room
-
-        if (creatorId === socket.id) {
-          socket.emit("isCreator", true);
-        } else {
-          socket.emit("isCreator", false);
-        }
+      socket.on("checkIsRoomCreator", ({ roomId, socketId }) => {
+        const isCreator = roomCreators[roomId] === socketId;
+        socket.emit("checkIsRoomCreatorResponse", isCreator);
       });
     });
   }

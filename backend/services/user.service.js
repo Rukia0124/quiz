@@ -46,7 +46,7 @@ class UserService {
       return {
         userId: user._id,
         token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
-          expiresIn: "24h",
+          expiresIn: "10h",
         }),
       };
     } catch (error) {

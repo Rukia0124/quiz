@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import io from "socket.io-client";
+import { getFromCookie } from "../lib/common";
 
 const NewQuiz = ({ questions, setSelected }) => {
   const [draggedItem, setDraggedItem] = useState(null);
@@ -27,12 +28,14 @@ const NewQuiz = ({ questions, setSelected }) => {
   };
 
   const handleClick = () => {
+    const token = getFromCookie("token");
     const socket = io(process.env.REACT_APP_API_URL);
-    socket.emit("createRoom");
+    socket.emit("createRoom", token);
 
     socket.on("roomCreated", (roomId) => {
       setRoomId(roomId);
       setShowLink(true);
+      document.cookie = "socketId=" + socket.id + ";path=/";
       console.log(roomId);
     });
   };
