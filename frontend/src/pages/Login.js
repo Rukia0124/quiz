@@ -4,7 +4,7 @@ import { API_ROUTES } from "../utils/constants";
 import { storeInCookies } from "../lib/common";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, successRedirection }) => {
   const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +23,7 @@ const Login = ({ setUser }) => {
       } else {
         storeInCookies(response.data.token, response.data.userId);
         setUser(response.data);
-        navigate("/");
+        !successRedirection ? navigate("/") : navigate(successRedirection);
       }
       setIsLoading(false);
     } catch (err) {

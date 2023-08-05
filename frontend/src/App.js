@@ -29,7 +29,10 @@ function App() {
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login setUser={setUser} />}></Route>
           <Route path="/newquiz" element={<Create />}></Route>
-          <Route path="/rooms/:id" element={<Lobby />}></Route>
+          <Route
+            path="/rooms/:id"
+            element={<Lobby setUser={setUser} user={user} />}
+          ></Route>
           <Route path="/join" element={<Join />}></Route>
           <Route path="/create-quiz" element={<Create />}></Route>
           <Route path="/questions" element={<Questions />}></Route>
