@@ -14,5 +14,31 @@
     "swagger-ui-express": "^4.6.3",
     "uuid": "^9.0.0",
     "zxcvbn": "^4.4.2"
+  },
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --runInBand --detectOpenHandles"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules"
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "developpement",
+      "NODE_CONFIG_DIR": "./config"
+    }
   }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import Cards from "../components/Cards";
 
-const Home = () => {
+const Home = ({ user }) => {
   return (
     <div>
-      <Cards />
+      <Cards user={user} />
     </div>
   );
 };
