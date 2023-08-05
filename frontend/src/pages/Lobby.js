@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { getFromCookie } from "../lib/common";
+import Login from "./Login";
 const socket = io(process.env.REACT_APP_API_URL);
-const Lobby = () => {
+const Lobby = ({ setUser, user }) => {
   const { id } = useParams();
   const [isRoomCreator, setIsRoomCreator] = useState(false);
 
   useEffect(() => {
+    console.log("test");
     const token = getFromCookie("token");
     const socketId = getFromCookie("socketId");
 
@@ -32,6 +34,11 @@ const Lobby = () => {
       <h1>LOBBY</h1>
       {isRoomCreator && (
         <button onClick={handleCopyLink}>Copier le lien d'invitation</button>
+      )}
+      {user ? (
+        ""
+      ) : (
+        <Login setUser={setUser} successRedirection={"/rooms/" + id} />
       )}
     </div>
   );
