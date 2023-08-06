@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 let roomCreators = {};
 let roomByUser = {};
 let players = {};
+let playersPseudos = {};
 
 class SocketService {
   initialize(server) {
@@ -31,6 +32,7 @@ class SocketService {
         io.emit("roomCreated", roomId);
         roomCreators[roomId] = socket.id;
         players[roomId] = [];
+        playersPseudos[roomId] = [];
         roomByUser[userId] = roomId;
 
         console.log("room " + roomId + " créée par : " + roomCreators[roomId]);
@@ -45,10 +47,12 @@ class SocketService {
         }
 
         let userId;
+        let pseudo;
         let isLogged = false;
         if (token) {
           const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
           userId = decodedToken.userId;
+          pseudo = decodedToken.pseudo;
           isLogged = true;
           console.log(token);
         }
@@ -57,10 +61,16 @@ class SocketService {
           socket.join(roomId);
           console.log("creator " + socket.id + " joined room " + roomId);
         } else {
+          if (!playersPseudos[roomId].includes(pseudo)) {
+            playersPseudos[roomId].push(pseudo);
+          }
+          console.log(playersPseudos);
           players[roomId].push(socket.id);
           socket.join(roomId);
           console.log("player " + socket.id + " joined room " + roomId);
         }
+
+        io.to(roomId).emit("listLobbyMembers", playersPseudos[roomId]);
       });
 
       socket.on("checkIsRoomCreator", ({ roomId, socketId }) => {
