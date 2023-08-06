@@ -26,7 +26,7 @@ function App() {
         <Navigation user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home user={user} />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/signup" element={<Signup setUser={setUser} />}></Route>
           <Route path="/login" element={<Login setUser={setUser} />}></Route>
           <Route path="/newquiz" element={<Create />}></Route>
           <Route

@@ -16,7 +16,16 @@ exports.signup = (req, res, next) => {
 
   userService
     .signup(userName, userPassword, userEmail)
-    .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
+    .then(() => {
+      userService
+        .login(userPassword, userName)
+        .then((token) => {
+          res.status(201).json({ message: "Utilisateur créé !", token: token.token, userId: token.userId });
+        })
+        .catch((error) => {
+          res.status(400).json({ error: error.message });
+        });
+    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 

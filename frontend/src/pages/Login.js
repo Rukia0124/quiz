@@ -23,6 +23,7 @@ const Login = ({ setUser, successRedirection }) => {
       } else {
         storeInCookies(response.data.token, response.data.userId);
         setUser(response.data);
+        localStorage.setItem('SUCCESS_MESSAGE', "SIGNIN_SUCCESS");
         !successRedirection ? navigate("/") : navigate(successRedirection);
       }
       setIsLoading(false);

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_ROUTES } from "../utils/constants";
-// import dotenv from "dotenv";
-// dotenv.config();
+import { storeInCookies } from "../lib/common";
+import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({ setUser }) => {
+  const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +18,14 @@ const Signup = () => {
         email,
         password,
       });
+      if (!response?.data?.token) {
+        console.log("Something went wrong during signin up: ", response);
+      } else {
+        localStorage.setItem('SUCCESS_MESSAGE', "SIGNUP_SUCCESS");
+        storeInCookies(response.data.token, response.data.userId);
+        setUser(response.data);
+        navigate("/")
+      }
     } catch (err) {
       console.log(err.response.data);
     }
