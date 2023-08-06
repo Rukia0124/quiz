@@ -64,7 +64,6 @@ class SocketService {
           if (!playersPseudos[roomId].includes(pseudo)) {
             playersPseudos[roomId].push(pseudo);
           }
-          console.log(playersPseudos);
           players[roomId].push(socket.id);
           socket.join(roomId);
           console.log("player " + socket.id + " joined room " + roomId);
