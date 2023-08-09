@@ -6,14 +6,15 @@ import Login from "./Login";
 import Players from "../components/Players";
 
 const socket = io(process.env.REACT_APP_API_URL);
- 
+
 const Lobby = ({ setUser, user }) => {
   const { id } = useParams();
   const [isRoomCreator, setIsRoomCreator] = useState(false);
   const [lobbyPlayers, setLobbyPlayers] = useState();
+  const [token, setToken] = useState();
 
   useEffect(() => {
-    const token = getFromCookie("token");
+    setToken(getFromCookie("token"));
     const socketId = getFromCookie("socketId");
 
     socket.emit("checkIsRoomCreator", { roomId: id, socketId: socketId });
@@ -35,7 +36,7 @@ const Lobby = ({ setUser, user }) => {
     return () => {
       socket.off("checkIsRoomCreatorResponse");
     };
-  }, [id]);
+  }, [id, token]);
 
   const handleCopyLink = () => {
     const invitationLink = `${process.env.REACT_APP_LOBBY_URL}${id}`;
@@ -43,7 +44,7 @@ const Lobby = ({ setUser, user }) => {
   };
 
   const launchQuiz = () => {
-    if(isCreator) {
+    if (isRoomCreator) {
       socket.emit("launchQuiz", { roomId: id, token: token });
     }
   };

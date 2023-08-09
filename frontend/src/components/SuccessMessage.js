@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 
 const SuccessMessage = ({ message }) => {
   useEffect(() => {
-    localStorage.setItem('SUCCESS_MESSAGE', "");
+    setTimeout(() => {
+      localStorage.setItem("SUCCESS_MESSAGE", "");
+    }, 1000);
   });
 
   return (
     <div>
-      {message == "SIGNUP_SUCCESS" && ("Inscription réussie !")}
-      {message == "SIGNIN_SUCCESS" && ("Connexion réussie !")}
+      {message === "SIGNUP_SUCCESS" && "Inscription réussie !"}
+      {message === "SIGNIN_SUCCESS" && "Connexion réussie !"}
     </div>
   );
 };

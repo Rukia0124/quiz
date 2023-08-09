@@ -20,7 +20,11 @@ exports.signup = (req, res, next) => {
       userService
         .login(userPassword, userName)
         .then((token) => {
-          res.status(201).json({ message: "Utilisateur créé !", token: token.token, userId: token.userId });
+          res.status(201).json({
+            message: "Utilisateur créé !",
+            token: token.token,
+            userId: token.userId,
+          });
         })
         .catch((error) => {
           res.status(400).json({ error: error.message });
