@@ -54,7 +54,6 @@ class SocketService {
           userId = decodedToken.userId;
           pseudo = decodedToken.pseudo;
           isLogged = true;
-          console.log(token);
         }
 
         if (isLogged && roomByUser[userId] === roomId) {
@@ -75,6 +74,31 @@ class SocketService {
       socket.on("checkIsRoomCreator", ({ roomId, socketId }) => {
         const isCreator = roomCreators[roomId] === socketId;
         socket.emit("checkIsRoomCreatorResponse", isCreator);
+      });
+
+      socket.on("launchQuiz", ({ roomId, token }) => {
+        if (!roomCreators[roomId]) {
+          console.log("room " + roomId + " does not exist");
+          return;
+        }
+
+        let userId;
+        let pseudo;
+        let isLogged = false;
+        if (token) {
+          const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+          userId = decodedToken.userId;
+          pseudo = decodedToken.pseudo;
+          isLogged = true;
+        }
+
+        if (isLogged && roomByUser[userId] === roomId) {
+          io.to(roomId).emit("startingQuiz", playersPseudos[roomId]);
+          setTimeout(() => {
+            // TODO
+            // io.to(roomId).emit("newQuestion", playersPseudos[roomId]);
+          }, 5000);
+        }
       });
     });
   }
