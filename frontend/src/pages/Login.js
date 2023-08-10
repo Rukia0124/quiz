@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { API_ROUTES } from "../utils/constants";
 import { storeInCookies } from "../lib/common";
 import { useNavigate } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Login = ({ setUser, successRedirection }) => {
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +26,12 @@ const Login = ({ setUser, successRedirection }) => {
       } else {
         storeInCookies(response.data.token, response.data.userId);
         setUser(response.data);
-        localStorage.setItem('SUCCESS_MESSAGE', "SIGNIN_SUCCESS");
+        localStorage.setItem("SUCCESS_MESSAGE", "SIGNIN_SUCCESS");
         !successRedirection ? navigate("/") : navigate(successRedirection);
       }
       setIsLoading(false);
     } catch (err) {
+      setErrorMessage("SIGNIN_ERROR");
       console.log("Some error occurred during signing in:", err);
       setIsLoading(false);
     }
@@ -58,6 +62,7 @@ const Login = ({ setUser, successRedirection }) => {
           <input type="submit" value="Envoyer" disabled={isLoading} />
         </form>
       </div>
+      <ErrorMessage message={errorMessage} setErrorMessage={setErrorMessage} />
     </div>
   );
 };

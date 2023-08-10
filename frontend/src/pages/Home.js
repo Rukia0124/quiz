@@ -6,8 +6,8 @@ const Home = ({ user }) => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
-    setSuccessMessage(localStorage.getItem('SUCCESS_MESSAGE'));
-  });
+    setSuccessMessage(localStorage.getItem("SUCCESS_MESSAGE"));
+  }, []);
 
   return (
     <div>

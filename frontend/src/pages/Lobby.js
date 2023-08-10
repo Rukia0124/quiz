@@ -4,16 +4,19 @@ import io from "socket.io-client";
 import { getFromCookie } from "../lib/common";
 import Login from "./Login";
 import Players from "../components/Players";
+import Countdown from "../components/Countdown";
 
 const socket = io(process.env.REACT_APP_API_URL);
- 
+
 const Lobby = ({ setUser, user }) => {
   const { id } = useParams();
   const [isRoomCreator, setIsRoomCreator] = useState(false);
   const [lobbyPlayers, setLobbyPlayers] = useState();
+  const [token, setToken] = useState();
+  const [quizStarted, setQuizStarted] = useState(false);
 
   useEffect(() => {
-    const token = getFromCookie("token");
+    setToken(getFromCookie("token"));
     const socketId = getFromCookie("socketId");
 
     socket.emit("checkIsRoomCreator", { roomId: id, socketId: socketId });
@@ -29,13 +32,13 @@ const Lobby = ({ setUser, user }) => {
     });
 
     socket.on("startingQuiz", () => {
-      // quiz starting
+      //count
     });
 
     return () => {
       socket.off("checkIsRoomCreatorResponse");
     };
-  }, [id]);
+  }, [id, token]);
 
   const handleCopyLink = () => {
     const invitationLink = `${process.env.REACT_APP_LOBBY_URL}${id}`;
@@ -43,25 +46,33 @@ const Lobby = ({ setUser, user }) => {
   };
 
   const launchQuiz = () => {
-    if(isCreator) {
+    if (isRoomCreator) {
       socket.emit("launchQuiz", { roomId: id, token: token });
+      setQuizStarted(true);
     }
   };
 
   return (
     <div>
-      <h1>LOBBY</h1>
-      <Players players={lobbyPlayers} />
-      {isRoomCreator && (
-        <div>
-          <button onClick={handleCopyLink}>Copier le lien d'invitation</button>
-          <button onClick={launchQuiz}>Commencer le Quiz</button>
-        </div>
-      )}
-      {user ? (
-        ""
+      {quizStarted ? (
+        <Countdown />
       ) : (
-        <Login setUser={setUser} successRedirection={"/rooms/" + id} />
+        <div>
+          <Players players={lobbyPlayers} />
+          {isRoomCreator && (
+            <div>
+              <button onClick={handleCopyLink}>
+                Copier le lien d'invitation
+              </button>
+              <button onClick={launchQuiz}>Commencer le Quiz</button>
+            </div>
+          )}
+          {user ? (
+            ""
+          ) : (
+            <Login setUser={setUser} successRedirection={"/rooms/" + id} />
+          )}
+        </div>
       )}
     </div>
   );
