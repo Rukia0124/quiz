@@ -32,7 +32,7 @@ const Lobby = ({ setUser, user }) => {
     });
 
     socket.on("startingQuiz", () => {
-      //count
+      setQuizStarted(true);
     });
 
     return () => {
@@ -48,7 +48,6 @@ const Lobby = ({ setUser, user }) => {
   const launchQuiz = () => {
     if (isRoomCreator) {
       socket.emit("launchQuiz", { roomId: id, token: token });
-      setQuizStarted(true);
     }
   };
 
