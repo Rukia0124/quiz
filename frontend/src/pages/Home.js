@@ -11,7 +11,7 @@ const Home = ({ user }) => {
 
   return (
     <div>
-      <SuccessMessage message={successMessage} />
+      <SuccessMessage message={successMessage} setMessage={setSuccessMessage} />
       <Cards user={user} />
     </div>
   );
