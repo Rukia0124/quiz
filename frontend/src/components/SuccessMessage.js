@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 
-const SuccessMessage = ({ message }) => {
+const SuccessMessage = ({ message, setMessage }) => {
   useEffect(() => {
     setTimeout(() => {
       localStorage.setItem("SUCCESS_MESSAGE", "");
     }, 1000);
+
+    setTimeout(() => {
+      setMessage("");
+    }, 5000);
   });
 
   return (
