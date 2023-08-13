@@ -30,7 +30,7 @@ const NewQuiz = ({ questions, setSelected }) => {
   const handleClick = () => {
     const token = getFromCookie("token");
     const socket = io(process.env.REACT_APP_API_URL);
-    socket.emit("createRoom", token);
+    socket.emit("createRoom", {token, questions});
 
     socket.on("roomCreated", (roomId) => {
       setRoomId(roomId);
