@@ -35,6 +35,11 @@ const Lobby = ({ setUser, user }) => {
       setQuizStarted(true);
     });
 
+    socket.on("newQuestion", ({question, type}) => {
+      console.log("question:", question);
+      console.log("type:", type);
+    });
+
     return () => {
       socket.off("checkIsRoomCreatorResponse");
     };
