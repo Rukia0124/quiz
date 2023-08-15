@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
+const roomService = require("./room.service");
 
 let roomCreators = {};
 let roomByUser = {};
@@ -20,7 +21,7 @@ class SocketService {
     io.on("connection", (socket) => {
       console.log("utilisateur connecté : " + socket.id);
 
-      socket.on("createRoom", ({token, questions}) => {
+      socket.on("createRoom", ({ token, questions }) => {
         const roomId = uuidv4();
         const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
         const userId = decodedToken.userId;
@@ -29,6 +30,16 @@ class SocketService {
           let previousRoomFromUser = roomByUser[userId];
           delete roomCreators[previousRoomFromUser];
           delete players[previousRoomFromUser];
+        }
+        try {
+          const createdRoom = roomService.createRoom({
+            creatorId: userId,
+            roomId: roomId,
+            name: "RoomName",
+            questions: questions,
+          });
+        } catch (error) {
+          console.log("failed to create room: " + error.message);
         }
 
         io.emit("roomCreated", roomId);
@@ -106,7 +117,7 @@ class SocketService {
     });
   }
 
-  sendQuestion(roomId, index){
+  sendQuestion(roomId, index) {
     console.log(`sending question ${index} to room ${roomId}`);
     io.to(roomId).emit("newQuestion", {
       question: questionsByRoom[roomId][index].question,
