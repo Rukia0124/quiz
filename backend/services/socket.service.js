@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const roomService = require("./room.service");
+const mongoose = require("mongoose"); // Import mongoose
 
 let roomCreators = {};
 let roomByUser = {};
@@ -10,7 +11,7 @@ let questionsByRoom = {};
 let io;
 
 class SocketService {
-  initialize(server) {
+  async initialize(server) {
     io = require("socket.io")(server, {
       cors: {
         origin: "*",
@@ -21,7 +22,7 @@ class SocketService {
     io.on("connection", (socket) => {
       console.log("utilisateur connecté : " + socket.id);
 
-      socket.on("createRoom", ({ token, questions }) => {
+      socket.on("createRoom", async ({ token, questions }) => {
         const roomId = uuidv4();
         const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
         const userId = decodedToken.userId;
@@ -80,6 +81,17 @@ class SocketService {
           players[roomId].push(socket.id);
           socket.join(roomId);
           console.log("player " + socket.id + " joined room " + roomId);
+        }
+        try {
+          let updatedRoom = roomService.updateRoom(roomId, {
+            participants: playersPseudos[roomId], // Passing an array here
+          });
+
+          updatedRoom.then((value) => {
+            console.log("Room participants updated:", value);
+          });
+        } catch (error) {
+          console.log("Failed to update room participants:", error.message);
         }
 
         io.to(roomId).emit("listLobbyMembers", playersPseudos[roomId]);
