@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button } from "antd";
 import Questions from "../components/Questions";
 import CreationModal from "../components/Modal";
-import NewQuiz from "../components/NewQuiz";
 
 const Create = () => {
   const [selectedModal, setSelectedModal] = useState(null);

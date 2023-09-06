@@ -7,6 +7,7 @@ const NewQuiz = ({ questions, setSelected }) => {
   const [draggedItem, setDraggedItem] = useState(null);
   const [roomId, setRoomId] = useState("");
   const [showLink, setShowLink] = useState(false);
+  const [quizName, setQuizName] = useState("");
 
   const handleDragStart = (e, index) => {
     setDraggedItem(index);
@@ -30,7 +31,7 @@ const NewQuiz = ({ questions, setSelected }) => {
   const handleClick = () => {
     const token = getFromCookie("token");
     const socket = io(process.env.REACT_APP_API_URL);
-    socket.emit("createRoom", {token, questions});
+    socket.emit("createRoom", { token, questions, quizName });
 
     socket.on("roomCreated", (roomId) => {
       setRoomId(roomId);
@@ -43,6 +44,16 @@ const NewQuiz = ({ questions, setSelected }) => {
   return (
     <div id="questions">
       <h3>Nouveau Quiz</h3>
+      <form>
+        <label for="quizName">Nom du quiz</label>
+        <input
+          type="text"
+          name="quizName"
+          id="quizName"
+          value={quizName}
+          onChange={(e) => setQuizName(e.target.value)}
+        />
+      </form>
       <div className="questions">
         <ul>
           {questions.map((question, index) => (
