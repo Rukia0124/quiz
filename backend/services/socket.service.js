@@ -22,7 +22,7 @@ class SocketService {
     io.on("connection", (socket) => {
       console.log("utilisateur connecté : " + socket.id);
 
-      socket.on("createRoom", async ({ token, questions }) => {
+      socket.on("createRoom", async ({ token, questions, quizName }) => {
         const roomId = uuidv4();
         const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
         const userId = decodedToken.userId;
@@ -36,7 +36,7 @@ class SocketService {
           const createdRoom = roomService.createRoom({
             creatorId: userId,
             roomId: roomId,
-            name: "RoomName",
+            name: quizName,
             questions: questions,
           });
         } catch (error) {
@@ -59,7 +59,7 @@ class SocketService {
         if (!roomCreators[roomId]) {
           console.log("room " + roomId + " does not exist");
           return;
-        }
+        // 
 
         let userId;
         let pseudo;
